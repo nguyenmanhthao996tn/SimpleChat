@@ -1,19 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
 #include <netdb.h>
 #include <netinet/in.h>
-
 #include <string.h>
+#include "config.h"
 
 int main(int argc, char **argv)
 {
-    int sockfd, portno, n;
+    int sockfd, port = DEFAULT_PORT_NUMBER, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
 
-    char buffer[256];
+    char buffer[MAX_BUFFER_SIZE];
 
     if (argc < 3)
     {
@@ -21,7 +20,7 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    portno = atoi(argv[2]);
+    port = atoi(argv[2]);
 
     /* Create a socket point */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -43,7 +42,7 @@ int main(int argc, char **argv)
     bzero((char *)&serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
-    serv_addr.sin_port = htons(portno);
+    serv_addr.sin_port = htons(port);
 
     /* Now connect to the server */
     if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
@@ -57,8 +56,8 @@ int main(int argc, char **argv)
      */
 
     printf("Please enter the message: ");
-    bzero(buffer, 256);
-    fgets(buffer, 255, stdin);
+    bzero(buffer, MAX_BUFFER_SIZE);
+    fgets(buffer, MAX_BUFFER_SIZE, stdin);
 
     /* Send message to the server */
     n = write(sockfd, buffer, strlen(buffer));
@@ -70,8 +69,8 @@ int main(int argc, char **argv)
     }
 
     /* Now read server response */
-    bzero(buffer, 256);
-    n = read(sockfd, buffer, 255);
+    bzero(buffer, MAX_BUFFER_SIZE);
+    n = read(sockfd, buffer, MAX_BUFFER_SIZE);
 
     if (n < 0)
     {

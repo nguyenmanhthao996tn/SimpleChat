@@ -1,18 +1,22 @@
+/******************** LIBRARIES ********************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
 #include <netdb.h>
 #include <netinet/in.h>
-
 #include <strings.h>
+#include "config.h"
 
+/******************** MAIN ********************/
 int main(int argc, char **argv)
 {
-    char buffer[255];
+    char buffer[MAX_BUFFER_SIZE];
     struct sockaddr_in serv_addr, cli_addr;
     unsigned int clilen;
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0), portno, newsockfd, n;
+    int sockfd, port = DEFAULT_PORT_NUMBER, newsockfd, n;
+
+    /* Open socket */
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0)
     {
         perror("ERROR opening socket");
@@ -21,11 +25,9 @@ int main(int argc, char **argv)
 
     /* Initialize socket structure */
     bzero((char *)&serv_addr, sizeof(serv_addr));
-    portno = 5001;
-
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
-    serv_addr.sin_port = htons(portno);
+    serv_addr.sin_port = htons(port);
 
     /* Now bind the host address using bind() call.*/
     if (bind(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
@@ -51,8 +53,8 @@ int main(int argc, char **argv)
     }
 
     /* If connection is established then start communicating */
-    bzero(buffer, 256);
-    n = read(newsockfd, buffer, 255);
+    bzero(buffer, MAX_BUFFER_SIZE);
+    n = read(newsockfd, buffer, MAX_BUFFER_SIZE);
 
     if (n < 0)
     {
