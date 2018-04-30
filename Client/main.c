@@ -1,3 +1,4 @@
+/******************** LIBRARIES ********************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -6,6 +7,7 @@
 #include <string.h>
 #include "config.h"
 
+/******************** MAIN ********************/
 int main(int argc, char **argv)
 {
     int sockfd, port = DEFAULT_PORT_NUMBER, n;
@@ -69,16 +71,16 @@ int main(int argc, char **argv)
     }
 
     /* Now read server response */
-    bzero(buffer, MAX_BUFFER_SIZE);
-    n = read(sockfd, buffer, MAX_BUFFER_SIZE);
+    // bzero(buffer, MAX_BUFFER_SIZE);
+    // n = read(sockfd, buffer, MAX_BUFFER_SIZE);
 
-    if (n < 0)
-    {
-        perror("ERROR reading from socket");
-        exit(1);
-    }
+    // if (n < 0)
+    // {
+    //     perror("ERROR reading from socket");
+    //     exit(1);
+    // }
 
-    printf("%s\n", buffer);
+    // printf("%s\n", buffer);
 
     return EXIT_SUCCESS;
 }

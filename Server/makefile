@@ -1,5 +1,5 @@
-main: main.c config.h
-	cc -o main main.c config.h -Wall
+main: main.c main.h config.h
+	cc -o main main.c main.h config.h -Wall
 
 clean:
 	rm main *.o
