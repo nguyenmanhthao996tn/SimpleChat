@@ -184,7 +184,7 @@ char *__myMessageToString(MyMessage_t *myMessage)
 char *__myMessageToJSONString(MyMessage_t *myMessage)
 {
     int flag = 1;
-    char *buffer = (char *)malloc(sizeof(char) * 255);
+    char *buffer = (char *)malloc(sizeof(char) * MAX_MESSAGE_BUFFER_SIZE);
 
     cJSON *messageJsonObject = cJSON_CreateObject();
     if (messageJsonObject == NULL)

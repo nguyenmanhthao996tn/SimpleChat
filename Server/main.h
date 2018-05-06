@@ -28,6 +28,7 @@ void setupPollingStruct(void);
 int pollPollingStruct(void);
 void addConnectionSocket(int newSocketFd);
 void removeConnectionSocket(int newSocketIndex);
+void broadcastMessageToAllConnectionSocket(char * message);
 void messengerHandler(int incomeMessageSocketIndex);
 
 #endif /* __MAIN_H__ */

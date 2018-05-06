@@ -136,6 +136,20 @@ void addConnectionSocket(int newSocketFd)
 
 void removeConnectionSocket(int newSocketIndex)
 {
+    fds[newSocketIndex].fd = 0;
+    fds[newSocketIndex].events = 0;
+}
+
+void broadcastMessageToAllConnectionSocket(char * message)
+{
+    int i = FD_CONN_MIN;
+    for (; i < FDS_SIZE; i++)
+    {
+        if (fds[i].fd != 0)
+        {
+            write(fds[i].fd, message, sizeof(message));
+        }
+    }
 }
 
 void messengerHandler(int incomeMessageSocketIndex)
@@ -158,6 +172,7 @@ void messengerHandler(int incomeMessageSocketIndex)
         break;
     default:
         printf("RECV: %s", messageBuffer);
+        broadcastMessageToAllConnectionSocket(messageBuffer);
         break;
     }
 }
